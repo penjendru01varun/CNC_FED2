@@ -1,0 +1,189 @@
+2. Responsive Navigation Menu
+
+Create a mobile-friendly navbar that collapses into a “hamburger” menu
+
+index.txt
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Responsive Navbar with CSS Grid & Hamburger Menu</title>
+<style>
+  :root {
+    --primary-color: #007bff;
+    --background-color: #fff;
+    --text-color: #333;
+    --hover-color: #0056b3;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f8;
+    color: var(--text-color);
+  }
+
+  nav {
+    background: var(--background-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 0 1rem;
+  }
+
+  .navbar-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 60px;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    user-select: none;
+  }
+
+  ul.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 1.5rem;
+  }
+
+  ul.nav-links li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 0.5rem 0;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  ul.nav-links li a:hover,
+  ul.nav-links li a:focus {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 24px;
+    height: 18px;
+    justify-content: space-between;
+  }
+
+  .hamburger span {
+    display: block;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 600px) {
+    .navbar-container {
+      grid-template-columns: auto auto;
+      height: 50px;
+    }
+
+    ul.nav-links {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      right: 0;
+      background: var(--background-color);
+      display: none;
+      grid-auto-flow: row;
+      grid-gap: 1rem;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      z-index: 100;
+    }
+
+    ul.nav-links.active {
+      display: grid;
+    }
+
+    ul.nav-links li a {
+      font-size: 1.2rem;
+      border: none;
+      padding: 0.5rem 0;
+      color: var(--primary-color);
+    }
+
+    ul.nav-links li a:hover,
+    ul.nav-links li a:focus {
+      color: var(--hover-color);
+      border: none;
+    }
+
+    .hamburger {
+      display: flex;
+      align-self: center;
+    }
+
+    /* Animate hamburger to X when active */
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 4px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="navbar-container">
+    <div class="logo">Menu</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" tabindex="0">Home</a></li>
+      <li><a href="#about" tabindex="0">About</a></li>
+      <li><a href="#services" tabindex="0">Services</a></li>
+      <li><a href="#contact" tabindex="0">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+
+  function toggleMenu() {
+    const isActive = navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  hamburger.addEventListener('keydown', function(e) {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleMenu();
+    }
+  });
+</script>
+</body>
+</html>
+
